@@ -1,0 +1,25 @@
+<label>Mode:
+  <select id="mode">
+    <option value="single">Single Day</option>
+    <option value="range">Date Range</option>
+  </select>
+</label><br>
+
+<div id="dateInputs">
+  <label>Date: <input type="date" id="replayDate"></label><br>
+</div>
+
+<script>
+document.getElementById("mode").onchange = function() {
+  const mode = this.value;
+  const div = document.getElementById("dateInputs");
+  if (mode === "range") {
+    div.innerHTML = `
+      <label>Start Date: <input type="date" id="startDate"></label><br>
+      <label>End Date: <input type="date" id="endDate"></label><br>
+    `;
+  } else {
+    div.innerHTML = `<label>Date: <input type="date" id="replayDate"></label><br>`;
+  }
+};
+</script>

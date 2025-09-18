@@ -1,0 +1,22 @@
+
+
+
+ 1. Open Command Prompt in your reflexion/ root directory
+cd path\to\reflexion
+
+
+🔹 2. Create the virtual environment
+python -m venv venv
+
+
+This creates a venv/ folder with isolated Python binaries and site packages.
+🔹 3. Activate the environment
+call venv\Scripts\activate.bat
+
+
+You’ll see (venv) in your prompt—Reflexion is now running in its own sandbox.
+
+🔧 Optional: Install Required Packages
+If you haven’t installed dependencies yet, run:
+pip install -r requirements.txt
+

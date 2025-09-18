@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>{{ title or "Reflexion DBManager" }}</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <style>
+    nav a {
+      text-decoration: none;
+      padding: 6px 12px;
+      margin-right: 8px;
+      color: #333;
+      border-radius: 4px;
+    }
+    nav a.active {
+      background-color: #007acc;
+      color: white;
+      font-weight: bold;
+    }
+    nav a:hover {
+      background-color: #e0e0e0;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="/" class="{% if request.path == '/' %}active{% endif %}">🏠 Status: DB Pulse</a>
+    <a href="/symbol_editor" class="{% if request.path.startswith('/symbol_editor') %}active{% endif %}">🧬 Symbol Editor</a>
+    <a href="/symbol_list" class="{% if request.path.startswith('/symbol_list') %}active{% endif %}">📋 Finviz Hydration</a>
+    <a href="/poly_s3" class="{% if request.path.startswith('/poly_s3') %}active{% endif %}">🗄️ Polygon S3 Loader</a>
+    <a href="/backfill" class="{% if request.path.startswith('/backfill') %}active{% endif %}">📦 Backfill Loader</a>
+    <a href="/init" class="{% if request.path.startswith('/init') %}active{% endif %}">🧨🧨 Reset: Init (Danger Zone) 🧨🧨</a>
+    <a href="/logs" class="{% if request.path.startswith('/logs') %}active{% endif %}">📜 Logs: Recent Activity</a>
+    <a href="/health" class="{% if request.path.startswith('/health') %}active{% endif %}">❤️ Health: Heartbeat</a>
+  </nav>
+  <hr>
+  {% block content %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Reflexion Cockpit — Trade Control</title>
+  <style>
+    body { background: #111; color: #eee; font-family: monospace; }
+    h1 { color: #f0f; }
+    table { border-collapse: collapse; width: 100%; margin-bottom: 10px; }
+    th, td { border: 1px solid #444; padding: 4px; text-align: center; }
+    input, select, button { font-family: monospace; font-size: 14px; margin: 5px; }
+    .entry { background: #003300; }
+    .exit  { background: #330000; }
+    .add   { background: #001133; }
+    .log   { font-size: 12px; background: #000; padding: 5px; border: 1px solid #333; height: 150px; overflow-y: scroll; }
+  </style>
+</head>
+<body>
+
+<h1>🎯 Reflexion Trade Control Panel</h1>
+
+<h2>Live Trade Signals</h2>
+<table id="signalsTable">
+  <thead>
+    <tr><th>Symbol</th><th>Action</th><th>Size</th><th>Price</th><th>Confirm</th></tr>
+  </thead>
+  <tbody></tbody>
+</table>
+
+<h2>Manual Trade Command</h2>
+<label>Symbol: <input id="manualSymbol" type="text" value="AAPL"></label>
+<label>Action:
+  <select id="manualAction">
+    <option value="buy">Buy</option>
+    <option value="sell">Sell</option>
+  </select>
+</label>
+<label>Size: <input id="manualSize" type="number" value="100"></label>
+<label>Price: <input id="manualPrice" type="number" value="0"></label>
+<button onclick="sendManualTrade()">Send Trade</button>
+
+<h2>Trade Log</h2>
+<div id="tradeLog" class="log"></div>
+
+<script>
+async function fetchSignals() {
+  const signals = await fetch('/trade_signals').then(r => r.json());
+  const tbody = document.querySelector('#signalsTable tbody');
+  tbody.innerHTML = '';
+  signals.forEach(s => {
+    const tr = document.createElement('tr');
+    tr.className = s.action;
+    tr.innerHTML = `
+      <td>${s.symbol}</td>
+      <td>${s.action}</td>
+      <td>${s.size}</td>
+      <td>${s.price}</td>
+      <td><button onclick="confirmTrade('${s.symbol}', '${s.action}', ${s.size}, ${s.price})">Confirm</button></td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function confirmTrade(symbol, action, size, price) {
+  fetch('/command', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      type: "manual_trade",
+      symbol,
+      payload: { action, size, price }
+    })
+  });
+}
+
+function sendManualTrade() {
+  const symbol = document.getElementById('manualSymbol').value;
+  const action = document.getElementById('manualAction').value;
+  const size = parseInt(document.getElementById('manualSize').value);
+  const price = parseFloat(document.getElementById('manualPrice').value);
+  confirmTrade(symbol, action, size, price);
+}
+
+async function fetchTradeLog() {
+  const log = await fetch('/trade_log').then(r => r.json());
+  const div = document.getElementById('tradeLog');
+  div.innerHTML = log.map(entry =>
+    `[${entry.timestamp}] ${entry.symbol} ${entry.action} ${entry.size} @ ${entry.price} → ${entry.status}`
+  ).join('<br>');
+}
+
+setInterval(() => {
+  fetchSignals();
+  fetchTradeLog();
+}, 1000);
+
+fetchSignals();
+fetchTradeLog();
+</script>
+
+</body>
+</html>

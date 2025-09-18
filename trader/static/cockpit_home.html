@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Reflexion Cockpit</title>
+  <style>
+    body { background: #000; color: #eee; font-family: monospace; text-align: center; }
+    h1 { color: #0f0; margin-top: 20px; }
+    .menu { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; margin-top: 30px; }
+    .menu a { background: #222; color: #0ff; padding: 10px 20px; text-decoration: none; border: 1px solid #0ff; border-radius: 5px; font-size: 16px; }
+    .stats { margin-top: 20px; font-size: 14px; }
+  </style>
+</head>
+<body>
+
+<h1>🧭 Reflexion Cockpit</h1>
+<div class="stats" id="stats">Loading system stats...</div>
+
+<div class="menu">
+    <a href="cockpit_intent.html">Trade Intent</a>
+    <a href="cockpit_orders.html">Live Orders</a>
+    <a href="cockpit_portfolio.html">Portfolio</a>
+    <a href="cockpit_audit.html">Audit Trail</a>
+    <a href="cockpit_market.html">Market Monitor</a>
+    <a href="cockpit_emergency.html">Emergency Stop</a>
+    <a href="cockpit_replay.html">Replay Launcher</a>
+    <a href="cockpit_metrics.html">Replay Metrics</a>
+</div>
+
+<script>
+async function loadStats() {
+  const res = await fetch('/heartbeat').then(r => r.json());
+  document.getElementById('stats').innerText =
+    `Session: ${res.session} | Symbols: ${res.symbol_count} | Last Update: ${new Date(res.timestamp).toLocaleString('en-US', { timeZone: 'America/New_York' })}`;
+}
+setInterval(loadStats, 5000);
+loadStats();
+</script>
+
+</body>
+</html>

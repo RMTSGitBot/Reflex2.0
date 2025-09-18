@@ -1,0 +1,5 @@
+{
+  "do_not_trade": { "confidence": 0.95 },
+  "manual_exclude": { "confidence": 0.90 },
+  "ipo_recent": { "confidence": 0.85 }
+}

@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1>🛠️ Symbol Editor</h1>
+
+  <form method="post" style="margin-bottom: 20px;">
+    <label>Symbol:</label>
+    <input type="text" name="symbol" required>
+
+    <label>Mode:</label>
+    <input type="text" name="mode" required>
+
+    <label>Filters (comma-separated):</label>
+    <input type="text" name="filters">
+
+    <button type="submit">Save</button>
+  </form>
+
+  <hr>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Symbol</th>
+        <th>Mode</th>
+        <th>Filters</th>
+        <th>Last Updated</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in rows %}
+      <tr>
+        <td>{{ row.symbol }}</td>
+        <td>{{ row.mode }}</td>
+        <td>{{ row.filters }}</td>
+        <td>{{ row.last_updated }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

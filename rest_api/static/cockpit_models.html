@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Reflexion Cockpit — Model Status</title>
+  <style>
+    body { background: #111; color: #eee; font-family: monospace; }
+    h1 { color: #0ff; }
+    select, pre { font-family: monospace; font-size: 14px; }
+    .pass { color: #0f0; }
+    .fail { color: #f00; }
+    .metric { display: inline-block; width: 150px; }
+  </style>
+</head>
+<body>
+
+<h1>🧠 Reflexion Model Status Dashboard</h1>
+
+<label>Select Symbol:
+  <select id="symbolSelect" onchange="loadModelStatus()"></select>
+</label>
+
+<h2>Model JSON</h2>
+<pre id="modelJson"></pre>
+
+<h2>Snapshot Metrics</h2>
+<div id="snapshotMetrics"></div>
+
+<h2>Filter Status</h2>
+<div id="filterStatus"></div>
+
+<script>
+async function fetchSymbols() {
+  const symbols = await fetch('/symbols').then(r => r.json());
+  const select = document.getElementById('symbolSelect');
+  select.innerHTML = '';
+  symbols.forEach(s => {
+    const opt = document.createElement('option');
+    opt.value = s.symbol;
+    opt.textContent = s.symbol;
+    select.appendChild(opt);
+  });
+  loadModelStatus();
+}
+
+async function loadModelStatus() {
+  const symbol = document.getElementById('symbolSelect').value;
+  const data = await fetch(`/model_status?symbol=${symbol}`).then(r => r.json());
+
+  // Model JSON
+  document.getElementById('modelJson').textContent =
+    JSON.stringify(data.model, null, 2);
+
+  // Snapshot metrics
+  const snapDiv = document.getElementById('snapshotMetrics');
+  snapDiv.innerHTML = '';
+  Object.entries(data.snapshot).forEach(([key, val]) => {
+    const div = document.createElement('div');
+    div.className = 'metric';
+    div.textContent = `${key}: ${val}`;
+    snapDiv.appendChild(div);
+  });
+
+  // Filter status (if model has entry_model filters)
+  const filterDiv = document.getElementById('filterStatus');
+  filterDiv.innerHTML = '';
+  const filters = data.model?.entry_model?.filters || [];
+  filters.forEach(f => {
+    const field = f.field;
+    const op = f.operator;
+    const threshold = f.threshold;
+    const value = data.snapshot[field];
+    const passed = eval(`${value} ${op} ${threshold}`);
+    const div = document.createElement('div');
+    div.className = passed ? 'pass' : 'fail';
+    div.textContent = `${field} ${op} ${threshold} → ${value} ${passed ? '✅' : '❌'}`;
+    filterDiv.appendChild(div);
+  });
+}
+
+fetchSymbols();
+</script>
+
+</body>
+</html>

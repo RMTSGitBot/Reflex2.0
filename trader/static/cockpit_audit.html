@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Reflexion Audit Trail</title>
+  <style>
+    body { background: #111; color: #eee; font-family: monospace; }
+    h1 { color: #f0f; }
+    .log { font-size: 12px; background: #000; padding: 5px; border: 1px solid #333; height: 400px; overflow-y: scroll; }
+  </style>
+</head>
+<body>
+
+<h1>🧾 Audit Trail</h1>
+<div id="auditLog" class="log"></div>
+
+<script>
+async function loadAudit() {
+  const log = await fetch('/trade_log').then(r => r.json());
+  const div = document.getElementById('auditLog');
+  div.innerHTML = log.map(entry =>
+    `[${new Date(entry.timestamp).toLocaleString('en-US', { timeZone: 'America/New_York' })}] ${entry.symbol} ${entry.action} ${entry.size} @ ${entry.price} → ${entry.status}`
+  ).join('<br>');
+}
+
+setInterval(loadAudit, 3000);
+loadAudit();
+</script>
+
+</body>
+</html>
