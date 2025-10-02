@@ -1,6 +1,0 @@
-Traceback (most recent call last):
-  File "C:\Users\mikem\OneDrive\Projects\Reflexion\main.py", line 2, in <module>
-    from core import run_datahub
-  File "C:\Users\mikem\OneDrive\Projects\Reflexion\core.py", line 2, in <module>
-    from ingestion.tick_stream import start_tick_stream
-ModuleNotFoundError: No module named 'ingestion.tick_stream'

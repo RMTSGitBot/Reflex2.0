@@ -1,9 +1,0 @@
-{% extends "base.html" %}
-{% block content %}
-  <h1>📜 Reflexion Logs</h1>
-  <pre style="background:#f4f4f4; padding:10px; border-radius:6px;">
-    {% for line in lines %}
-    {{ line }}
-    {% endfor %}
-  </pre>
-{% endblock %}

@@ -1,5 +1,0 @@
-{
-  "AAPL": { "lifecycle": "HOT" },
-  "TSLA": { "lifecycle": "WARM" },
-  "NVDA": { "lifecycle": "COLD" }
-}

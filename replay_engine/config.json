@@ -1,9 +1,0 @@
-{
-  "date": "2025-07-15",
-  "symbols": "ALL",
-  "model": "entry_model_v3",
-  "broker": "simulated",
-  "account": "backtest",
-  "speed": 10.0,
-  "output": "results_2025-07-15.xlsx"
-}

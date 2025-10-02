@@ -1,0 +1,8 @@
+2025-09-26 11:29:38 [INFO] DBCore (dbcore.py:20) :: PostgreSQL pool initialized (1..8)
+2025-09-26 12:03:41 [INFO] DBCore (dbcore.py:20) :: PostgreSQL pool initialized (1..8)
+2025-09-26 13:52:29 [INFO] DBCore (dbcore.py:20) :: PostgreSQL pool initialized (1..8)
+2025-09-26 13:55:16 [INFO] DBCore (dbcore.py:20) :: PostgreSQL pool initialized (1..8)
+2025-09-26 13:55:22 [INFO] DBInit (init_db.py:18) :: Initializing database schema...
+2025-09-26 13:55:22 [INFO] DBUtils (dbutils.py:22) :: Ensured timescaledb extension.
+2025-09-26 13:55:22 [INFO] DBUtils (dbutils.py:34) :: Ensured hypertable ticks(ts).
+2025-09-26 13:55:22 [INFO] DBUtils (dbutils.py:34) :: Ensured hypertable minute_bars(ts).
